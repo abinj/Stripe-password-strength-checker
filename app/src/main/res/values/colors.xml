@@ -3,4 +3,10 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="excellent">#008CDD</color>
+    <color name="good">#6EAD09</color>
+    <color name="ok">#E09115</color>
+    <color name="poor">#E01414</color>
+    <color name="white">#fff</color>
 </resources>

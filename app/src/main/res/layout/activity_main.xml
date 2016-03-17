@@ -3,25 +3,72 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:weightSum="1">
-
-    <EditText
-        android:id="@+id/password_field"
+    android:weightSum="1"
+    android:background="@drawable/bg_image">
+    
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:layout_marginRight="40dp"
-        android:layout_marginLeft="40dp"/>
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="150dp"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:background="@drawable/top_corner_txt"
+        android:weightSum="2">
 
-    <ProgressBar
-        android:id="@+id/progress"
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:max="100"
-        android:indeterminate="false"
-        android:background="#e1e1e1"
-        android:layout_marginRight="40dp"
-        android:layout_marginLeft="40dp"/>
+        <EditText
+            android:id="@+id/password_field"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginRight="40dp"
+            android:background="#fff"
+            android:minEms="8"
+            android:hint="Password"
+            android:textColor="#000"
+            android:layout_weight="1.5"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <ImageView
+                android:id="@+id/excellent"
+                android:layout_width="7dp"
+                android:layout_height="8dp"
+                android:layout_weight=".5" />
+            <ImageView
+                android:id="@+id/good"
+                android:layout_width="7dp"
+                android:layout_height="8dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight=".5" />
+            <ImageView
+                android:id="@+id/ok"
+                android:layout_width="7dp"
+                android:layout_height="8dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight=".5" />
+            <ImageView
+                android:id="@+id/poor"
+                android:layout_width="7dp"
+                android:layout_height="8dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight=".5" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/submit_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button"
+        android:text="Submit"
+        android:textColor="#fff"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"/>
 
 </LinearLayout>
