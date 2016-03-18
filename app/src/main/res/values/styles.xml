@@ -8,4 +8,24 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="error_poor" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/poor</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="error_ok" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/ok</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="error_good" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/good</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="error_excellent" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/excellent</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
 </resources>

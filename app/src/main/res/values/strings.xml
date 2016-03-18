@@ -2,4 +2,15 @@
     <string name="app_name">PasswordStrengthChecker</string>
 
     <string name="min_length_error">Must be least 8 characters</string>
+    <string name="weak">Weak</string>
+    <string name="ok">Ok</string>
+    <string name="good">Good</string>
+    <string name="excellent">Excellent</string>
+
+    <string-array name="patterns">
+        <item>.*[a-z]+.*</item>
+        <item>.*[A-Z]+.*</item>
+        <item>.*[\\d]+.*</item>
+        <item>.*[@#$%]+.*</item>
+    </string-array>
 </resources>
