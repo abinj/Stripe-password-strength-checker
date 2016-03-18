@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.dxuser.passwordstrengthchecker.R;
@@ -22,11 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView mMeterExcellent, mMeterGood, mMeterOk, mMeterPoor;
     private TextView strengthRange;
     private Button mSubmitBtn;
-    private String[] partialRegexChecks = { ".*[a-z]+.*", // lower
-            ".*[A-Z]+.*", // upper
-            ".*[\\d]+.*", // digits
-            ".*[@#$%]+.*" // symbols
-    };
+    private LinearLayout strengthMeterLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         mMeterPoor = (ImageView) findViewById(R.id.poor);
         mSubmitBtn = (Button) findViewById(R.id.submit_btn);
         strengthRange = (TextView) findViewById(R.id.strength_range);
+        strengthMeterLayout = (LinearLayout) findViewById(R.id.strength_meter_layout);
         keyChangeListener();
     }
 
@@ -46,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         mInputPassword.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
@@ -57,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.length() < 8) {
-                    showMeter(R.color.white);
+                    strengthMeterLayout.setVisibility(View.INVISIBLE);
                 }
             }
         });
