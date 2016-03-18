@@ -1,32 +1,29 @@
 package com.example.dxuser.passwordstrengthchecker.activity;
 
+
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.dxuser.passwordstrengthchecker.R;
+
+
 
 public class MainActivity extends AppCompatActivity {
     private EditText mInputPassword;
     private ImageView mMeterExcellent, mMeterGood, mMeterOk, mMeterPoor;
+    private TextView strengthRange;
     private Button mSubmitBtn;
-    int lowercaseCount = 0;
-    int minLengthCount = 0;
-    int uppercaseCount = 0;
-    int numberCount = 0;
-    int symbolCount = 0;
-    int combinationCount = 0;
-    private String[] partialRegexChecks = { ".*[a-z]+.*", // lower
-            ".*[A-Z]+.*", // upper
-            ".*[\\d]+.*", // digits
-            ".*[@#$%]+.*" // symbols
-    };
+    private LinearLayout strengthMeterLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
         mMeterOk = (ImageView) findViewById(R.id.ok);
         mMeterPoor = (ImageView) findViewById(R.id.poor);
         mSubmitBtn = (Button) findViewById(R.id.submit_btn);
+        strengthRange = (TextView) findViewById(R.id.strength_range);
+        strengthMeterLayout = (LinearLayout) findViewById(R.id.strength_meter_layout);
         keyChangeListener();
     }
 
@@ -45,19 +44,17 @@ public class MainActivity extends AppCompatActivity {
         mInputPassword.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                calculatePasswordStrength(s.toString(), count);
+                calculatePasswordStrength(s.toString());
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                int whiteColor = R.color.white;
                 if (s.length() < 8) {
-                    showMeter(whiteColor, whiteColor, whiteColor, whiteColor);
+                    strengthMeterLayout.setVisibility(View.INVISIBLE);
                 }
             }
         });
@@ -68,94 +65,66 @@ public class MainActivity extends AppCompatActivity {
                 String password = mInputPassword.getText().toString();
                 int length = password.length();
                 if (length < 8) {
-                    mInputPassword.setError(getResources().getString(R.string.min_length_error));
+                    mInputPassword.setError(getApplicationContext().getResources().getString(R.string.min_length_error));
+                    strengthRange.setVisibility(View.INVISIBLE);
                 }
-                calculatePasswordStrength(password, length);
-            }
-        });
-
-        mInputPassword.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                //You can identify which key pressed buy checking keyCode value with KeyEvent.KEYCODE_
-                if(keyCode == KeyEvent.KEYCODE_CLEAR){
-                    //this is for backspace
-                    lowercaseCount = 0;
-                    minLengthCount = 0;
-                    uppercaseCount = 0;
-                    numberCount = 0;
-                    symbolCount = 0;
-                    combinationCount = 0;
-                }
-                return false;
+                calculatePasswordStrength(password);
             }
         });
     }
 
-    private void calculatePasswordStrength(String password, int count) {
-        if (count > 8) {
+    private void calculatePasswordStrength(String password) {
+        if (password.length() > 8) {
             int strength = passwordStrengthCalculator(password);
-            int totalScore = ((minLengthCount * 3) + (uppercaseCount * 4)
-                    + (numberCount * 5) + (symbolCount * 5) + (combinationCount * 7));
-            if (totalScore < 26) {
-                setStrengthAmount(R.drawable.poor_circle, strength);
-            } else if (totalScore < 51) {
-                setStrengthAmount(R.drawable.ok_circle, strength);
-            } else if (totalScore < 76) {
-                setStrengthAmount(R.drawable.good_circle, strength);
-            } if (totalScore > 76) {
-                setStrengthAmount(R.drawable.excellent_circle, strength);
+            strengthRange.setVisibility(View.VISIBLE);
+            switch (strength) {
+                case 25:
+                    showMeter(R.drawable.poor_circle);
+                    strengthRange.setText(this.getResources().getString(R.string.weak));
+                    strengthRange.setTextColor(ContextCompat.getColor(this, R.color.poor));
+                    break;
+                case 50:
+                    showMeter(R.drawable.ok_circle);
+                    strengthRange.setText(this.getResources().getString(R.string.ok));
+                    strengthRange.setTextColor(ContextCompat.getColor(this, R.color.ok));
+                    break;
+                case 75:
+                    showMeter(R.drawable.good_circle);
+                    strengthRange.setText(this.getResources().getString(R.string.good));
+                    strengthRange.setTextColor(ContextCompat.getColor(this, R.color.good));
+                    break;
+                case 100:
+                    showMeter(R.drawable.excellent_circle);
+                    strengthRange.setText(this.getResources().getString(R.string.excellent));
+                    strengthRange.setTextColor(ContextCompat.getColor(this, R.color.excellent));
+                    break;
             }
+        } else {
+            strengthRange.setVisibility(View.INVISIBLE);
         }
     }
 
-    private void setStrengthAmount(int color, int score) {
-        int whiteColor = R.color.white;
-        switch (score) {
-            case 25:
-                showMeter(color, whiteColor, whiteColor, whiteColor);
-                break;
-            case 50:
-                showMeter(color, color, whiteColor, whiteColor);
-                break;
-            case 75:
-                showMeter(color, color, color, whiteColor);
-                break;
-            case 100:
-                showMeter(color, color, color, color);
-                break;
-        }
-    }
-
-    private void showMeter(int poorColor, int okColor, int goodColor, int excellentColor) {
-        mMeterPoor.setBackgroundResource(poorColor);
-        mMeterOk.setBackgroundResource(okColor);
-        mMeterGood.setBackgroundResource(goodColor);
-        mMeterExcellent.setBackgroundResource(excellentColor);
+    private void showMeter(int circle) {
+        mMeterPoor.setBackground(ContextCompat.getDrawable(this, circle));
+        mMeterOk.setBackground(ContextCompat.getDrawable(this, circle));
+        mMeterGood.setBackground(ContextCompat.getDrawable(this, circle));
+        mMeterExcellent.setBackground(ContextCompat.getDrawable(this, circle));
     }
 
     private int passwordStrengthCalculator(String password) {
         int strengthPercentage=0;
+        String[] patterns = this.getResources().getStringArray(R.array.patterns);
 
-        minLengthCount = (password.length())/ 8;
-        if (password.matches(partialRegexChecks[0])) {
-            if (lowercaseCount == 0)    combinationCount ++;
-            lowercaseCount ++;
+        if (password.matches(patterns[0])) {
             strengthPercentage+=25;
         }
-        if (password.matches(partialRegexChecks[1])) {
-            if (uppercaseCount == 0)    combinationCount ++;
-            uppercaseCount ++;
+        if (password.matches(patterns[1])) {
             strengthPercentage+=25;
         }
-        if (password.matches(partialRegexChecks[2])) {
-            if (numberCount == 0)   combinationCount ++;
-            numberCount ++;
+        if (password.matches(patterns[2])) {
             strengthPercentage+=25;
         }
-        if (password.matches(partialRegexChecks[3])) {
-            if (symbolCount == 0)   combinationCount ++;
-            symbolCount ++;
+        if (password.matches(patterns[3])) {
             strengthPercentage+=25;
         }
         return strengthPercentage;
